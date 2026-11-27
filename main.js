@@ -1,2 +1,28 @@
-if(!matchMedia('(prefers-reduced-motion: reduce)').matches){const e=document.querySelector('[data-year]');let t;function run(n){t??=n;let p=Math.min((n-t)/950,1);e.textContent=Math.round(2000+16*p);if(p<1)requestAnimationFrame(run)}requestAnimationFrame(run)}
-const items=[["Manufacturing", "Technical SEO, product information and RFQ-focused landing pages."], ["Healthcare", "Local discovery and clear service information that supports informed enquiries."], ["D2C & Ecommerce", "Product discovery and customer acquisition with measurable conversion goals."], ["Hospitality", "Local discovery, relevant campaigns and direct enquiry journeys."], ["Professional Services", "Service-specific pages and targeted lead generation."]];document.querySelectorAll("button[data-i]").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("button[data-i]").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));const [h,d]=items[Number(b.dataset.i)];document.querySelector("#heading").textContent=h;document.querySelector("#detail").textContent=d;}))
+const toggle = document.querySelector('#menu-toggle');
+const menu = document.querySelector('#site-menu');
+const compact = matchMedia('(max-width:800px)');
+toggle.parentElement.classList.add('js-menu');
+function setMenu(open) {
+  toggle.setAttribute('aria-expanded', String(open));
+  menu.classList.toggle('open', open);
+}
+function resizeMenu() {
+  toggle.hidden = !compact.matches;
+  setMenu(false);
+}
+resizeMenu();
+compact.addEventListener('change', resizeMenu);
+toggle.addEventListener('click', () => setMenu(!menu.classList.contains('open')));
+menu.addEventListener('click', () => setMenu(false));
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && menu.classList.contains('open')) {
+    setMenu(false);
+    toggle.focus();
+  }
+});
+const motion = document.querySelector('#motion');
+motion.hidden = false;
+motion.addEventListener('click', () => {
+  const paused = document.querySelector('.belt').classList.toggle('paused');
+  motion.textContent = paused ? 'Play strip' : 'Pause strip';
+});
